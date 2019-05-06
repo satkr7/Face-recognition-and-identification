@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>
+Celebrity Face prediction
+</title>
+</head>
+
+<body>
+	<input id="image_selector" type="file">
+	<br><br>
+	<button id="predict_button">PREDICT</button>
+	<p>predictions</p>
+	<p>name: <span id="name_prediction"></span></p>
+	<p>probability: <span id="prob_prediction"></span></p>
+	<img id="selected_image" src="" height=200 width=300/>
+	<br><br><br><br>
+	<input id="name_update" value="" placeholder="enter name of new user">
+	<button id="update_button">UPDATE</button>
+	
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script>
+	
+		let base64Image;
+		$("#image_selector").change(function() {
+		let reader = new FileReader();
+		reader.onload = function(e) {
+			let dataURL = reader.result;
+			$("#selected_image").attr("src",dataURL);
+			base64Image = dataURL.replace("data:image/jpeg;base64,","");
+			console.log(base64Image)
+		}
+		reader.readAsDataURL($("#image_selector")[0].files[0]);
+		$("#name_prediction").text("");
+		$("#prob_prediction").text("");
+		});
+		
+		$("#predict_button").click(function(event) {
+			let message = {
+				image: base64Image
+				
+			}
+			console.log(message);
+			
+			$.post("/predict",JSON.stringify(message), function(response){
+				console.log(response);
+				names="";
+				prob="";
+				for(i=0;i<response.length;i++)
+				{
+				 names+=(response[i].name)+" , ";
+				 prob+=(response[i].probability)+" , ";
+				}
+				$("#name_prediction").text(names);
+				$("#prob_prediction").text(prob);
+			});
+			
+		});
+		
+		$("#update_button").click(function(event) {
+			let message = { image: base64Image , name: $("#name_update").val() }
+			console.log(message);
+			
+			$.post("/update",JSON.stringify(message), function(response){
+				console.log(response);
+				
+				$("#name_prediction").text("");
+				$("#prob_prediction").text("");
+				$("#name_update").value("");
+				
+			});
+			
+		});
+		
+		
+		
+	</script>
+	
+	
+</body>
+
+</html>
