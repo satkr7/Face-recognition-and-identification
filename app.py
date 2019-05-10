@@ -22,11 +22,11 @@ app = Flask(__name__)
 
 def get_model():
     global model
-    json_file = open('saved/sequential_NN_314_model_output_53dim.json', 'r')
+    json_file = open('saved/sequential_NN_629_model_output_53dim.json', 'r')
     loaded_model_json = json_file.read()
     json_file.close()
     model = model_from_json(loaded_model_json)
-    model.load_weights("saved/sequential_NN_314_model_ouput_53dim.h5")
+    model.load_weights("saved/sequential_NN_629_model_ouput_53dim.h5")
     model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
     print("Loaded NN model from disk")
     
@@ -46,9 +46,7 @@ def load_image(path):
 def load_names_label_encoder():
 	global names_encode
 	names_encode = preprocessing.LabelEncoder()
-	with open('saved/names_encode.pickle', 'rb') as f:
-		names_encode.classes_ = pickle.load(f)
-	
+	names_encode.classes_ = np.load('saved/names_encode.npy')
 
 
 def predict_results(encoded_image):
