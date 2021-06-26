@@ -1,6 +1,6 @@
 # Face Identification and recognition using OpenFace
 
-Click to see [BLOG](https://medium.com/@krsatyam1996/face-recognition-using-openface-92f02045ca2)
+Click to see [BLOG](https://medium.com/analytics-vidhya/face-recognition-using-openface-92f02045ca2a)
 
 Dataset : [click]()
 
